@@ -1,0 +1,12 @@
+{
+  "extends": "timkurvers",
+  "rules": {
+    "import/no-cycle": "off",
+    "lines-between-class-members": "off",
+    "no-bitwise": "off",
+    "no-constant-condition": "off",
+    "no-continue": "off",
+    "no-plusplus": "off",
+    "no-restricted-syntax": "off"
+  }
+}
