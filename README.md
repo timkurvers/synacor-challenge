@@ -16,10 +16,10 @@ npm install
 
 ## Running VM
 
-To run a program in the VM:
+To run a program (from the `programs`-folder) in the VM:
 
 ```bash
-npm start programs/example.bin
+npm start example
 ```
 
 ## Development
@@ -27,7 +27,7 @@ npm start programs/example.bin
 To monitor code changes and re-run programs in the VM during development:
 
 ```bash
-npm run start:dev programs/example.bin
+npm run start:dev example
 ```
 
 [Node.js]: https://nodejs.org/en/
