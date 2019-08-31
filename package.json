@@ -1,0 +1,25 @@
+{
+  "name": "@timkurvers/synacor-challenge",
+  "author": "Tim Kurvers @timkurvers",
+  "repository": "github:timkurvers/synacor-challenge",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "disassemble": "node --experimental-modules disassemble.mjs",
+    "disassemble:dev": "nodemon --no-stdin --exec npm run disassemble",
+    "lint": "eslint . --ext js,mjs",
+    "start": "node --experimental-modules index.mjs",
+    "start:dev": "nodemon --no-stdin --exec npm run start"
+  },
+  "dependencies": {
+    "colors": "^1.3.3"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.2.2",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-timkurvers": "^1.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "nodemon": "^1.19.1"
+  }
+}
