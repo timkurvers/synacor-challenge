@@ -2,6 +2,7 @@
 
 ![Node Version](https://badgen.net/badge/node/12+/green)
 [![MIT License](https://badgen.net/github/license/timkurvers/synacor-challenge)](LICENSE.md)
+![Checks](https://badgen.net/github/checks/timkurvers/synacor-challenge)
 
 JavaScript / ES6+ VM for https://challenge.synacor.com.
 
