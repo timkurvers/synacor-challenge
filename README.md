@@ -1,8 +1,9 @@
 # Synacor Challenge
 
-JavaScript / ES6+ VM for https://challenge.synacor.com.
+![Version](https://badgen.net/badge/node/10+/green)
+[![MIT License](https://badgen.net/github/license/timkurvers/synacor-challenge)](LICENSE.md)
 
-**Supported Node versions: 10 or higher**
+JavaScript / ES6+ VM for https://challenge.synacor.com.
 
 ## Setup
 
