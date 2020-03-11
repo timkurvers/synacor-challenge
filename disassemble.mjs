@@ -1,5 +1,3 @@
-#!/usr/bin/env node --experimental-modules --experimental-specifier-resolution=node
-
 import Disassembler from './src/Disassembler';
 import Program from './src/Program';
 
