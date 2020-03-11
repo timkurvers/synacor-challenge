@@ -5,10 +5,10 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "disassemble": "node --experimental-modules disassemble.mjs",
+    "disassemble": "./disassemble.mjs",
     "disassemble:dev": "nodemon --no-stdin --exec npm run disassemble",
     "lint": "eslint . --ext js,mjs",
-    "start": "node --experimental-modules index.mjs",
+    "start": "./index.mjs",
     "start:dev": "nodemon --no-stdin --exec npm run start"
   },
   "dependencies": {
