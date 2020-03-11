@@ -3,6 +3,7 @@
   "rules": {
     "no-bitwise": "off",
     "no-constant-condition": "off",
+    "no-console": "off",
     "no-continue": "off",
     "no-plusplus": "off",
     "no-restricted-syntax": "off"
