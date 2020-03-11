@@ -1,6 +1,6 @@
 {
   "name": "@timkurvers/synacor-challenge",
-  "author": "Tim Kurvers @timkurvers",
+  "author": "Tim Kurvers <tim@moonsphere.net>",
   "repository": "github:timkurvers/synacor-challenge",
   "license": "MIT",
   "private": true,
@@ -15,11 +15,11 @@
     "colors": "^1.3.3"
   },
   "devDependencies": {
-    "babel-eslint": "^10.0.3",
-    "eslint": "^6.2.2",
+    "@timkurvers/eslint-config": "^2.0.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.0.1",
-    "eslint-config-timkurvers": "^1.1.0",
-    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-import": "^2.20.1",
     "nodemon": "^1.19.1"
   }
 }
