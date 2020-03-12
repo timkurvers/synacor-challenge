@@ -1,7 +1,7 @@
 name: ci
 on: [push, pull_request]
 jobs:
-  build:
+  lint-disassemble-and-run:
     name: lint, disassemble and run example program
     runs-on: ubuntu-latest
     steps:
