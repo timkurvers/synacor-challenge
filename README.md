@@ -6,6 +6,10 @@
 
 JavaScript / ES6+ VM for https://challenge.synacor.com.
 
+The [architecture spec] is bundled in this repository.
+
+See [synacor-binja-plugin] for a [Binary Ninja] plugin capable of analyzing Synacor programs.
+
 ## Setup
 
 Install [Node.js] 12 or higher for your platform.
@@ -32,4 +36,7 @@ To monitor code changes and re-run programs in the VM during development:
 npm run start:dev example
 ```
 
+[Binary Ninja]: https://binary.ninja/
 [Node.js]: https://nodejs.org/en/
+[architecture spec]: https://github.com/timkurvers/synacor-challenge/blob/master/ARCH-SPEC.txt
+[synacor-binja-plugin]: https://github.com/timkurvers/synacor-binja-plugin/
