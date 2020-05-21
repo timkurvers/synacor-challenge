@@ -1,20 +1,16 @@
 import fs from 'fs';
 
 class Program {
-  constructor(name) {
-    this.name = name;
+  constructor(path) {
+    this.path = path;
   }
 
   get data() {
     return fs.readFileSync(this.path);
   }
 
-  get path() {
-    return `./programs/${this.name}.bin`;
-  }
-
-  static for(name) {
-    return new Program(name);
+  static for(path) {
+    return new Program(path);
   }
 }
 

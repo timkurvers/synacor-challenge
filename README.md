@@ -25,7 +25,7 @@ npm install
 To run a program (from the `programs`-folder) in the VM:
 
 ```bash
-npm start example
+npm start programs/example.synbin
 ```
 
 ## Development

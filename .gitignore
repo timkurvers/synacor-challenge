@@ -1,3 +1,4 @@
 /node_modules/
 /notes/
-/programs/challenge.bin
+/programs/*
+!/programs/example.synbin
