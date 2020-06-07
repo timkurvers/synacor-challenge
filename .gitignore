@@ -1,4 +1,5 @@
 /node_modules/
 /notes/
 /programs/*
+!/programs/alphabet.synbin
 !/programs/example.synbin
