@@ -1,8 +1,10 @@
 /* eslint-disable no-param-reassign */
 
-import { LITERAL_MODULO } from '../../constants';
+import {
+  ADDRESS, CHAR, REGISTER, VALUE,
+  LITERAL_MODULO,
+} from '../../constants';
 
-import Operand from './Operand';
 import Operation from './Operation';
 
 // halt: 0
@@ -20,7 +22,7 @@ export const halt = new Operation({
 export const set = new Operation({
   opcode: 1,
   name: 'set',
-  operands: [Operand.REGISTER, Operand.DYNAMIC],
+  operands: [REGISTER, VALUE],
   exec: (vm, a, b) => {
     vm.registers[a] = b;
   },
@@ -31,7 +33,7 @@ export const set = new Operation({
 export const push = new Operation({
   opcode: 2,
   name: 'push',
-  operands: [Operand.DYNAMIC],
+  operands: [VALUE],
   exec: (vm, a) => {
     vm.stack.push(a);
   },
@@ -42,7 +44,7 @@ export const push = new Operation({
 export const pop = new Operation({
   opcode: 3,
   name: 'pop',
-  operands: [Operand.REGISTER],
+  operands: [REGISTER],
   exec: (vm, a) => {
     if (!vm.stack.length) {
       throw new Error('empty stack');
@@ -56,7 +58,7 @@ export const pop = new Operation({
 export const eq = new Operation({
   opcode: 4,
   name: 'eq',
-  operands: [Operand.REGISTER, Operand.DYNAMIC, Operand.DYNAMIC],
+  operands: [REGISTER, VALUE, VALUE],
   exec: (vm, a, b, c) => {
     vm.registers[a] = b === c ? 1 : 0;
   },
@@ -67,7 +69,7 @@ export const eq = new Operation({
 export const gt = new Operation({
   opcode: 5,
   name: 'gt',
-  operands: [Operand.REGISTER, Operand.DYNAMIC, Operand.DYNAMIC],
+  operands: [REGISTER, VALUE, VALUE],
   exec: (vm, a, b, c) => {
     vm.registers[a] = b > c ? 1 : 0;
   },
@@ -78,7 +80,7 @@ export const gt = new Operation({
 export const jmp = new Operation({
   opcode: 6,
   name: 'jmp',
-  operands: [Operand.DYNAMIC | Operand.TYPE_ADDRESS],
+  operands: [ADDRESS],
   exec: (vm, a) => {
     vm.address = a;
   },
@@ -89,7 +91,7 @@ export const jmp = new Operation({
 export const jt = new Operation({
   opcode: 7,
   name: 'jt',
-  operands: [Operand.DYNAMIC, Operand.DYNAMIC | Operand.TYPE_ADDRESS],
+  operands: [VALUE, ADDRESS],
   exec: (vm, a, b) => {
     if (a !== 0) {
       vm.address = b;
@@ -102,7 +104,7 @@ export const jt = new Operation({
 export const jf = new Operation({
   opcode: 8,
   name: 'jf',
-  operands: [Operand.DYNAMIC, Operand.DYNAMIC | Operand.TYPE_ADDRESS],
+  operands: [VALUE, ADDRESS],
   exec: (vm, a, b) => {
     if (a === 0) {
       vm.address = b;
@@ -115,7 +117,7 @@ export const jf = new Operation({
 export const add = new Operation({
   opcode: 9,
   name: 'add',
-  operands: [Operand.REGISTER, Operand.DYNAMIC, Operand.DYNAMIC],
+  operands: [REGISTER, VALUE, VALUE],
   exec: (vm, a, b, c) => {
     vm.registers[a] = (b + c) % LITERAL_MODULO;
   },
@@ -126,7 +128,7 @@ export const add = new Operation({
 export const mult = new Operation({
   opcode: 10,
   name: 'mult',
-  operands: [Operand.REGISTER, Operand.DYNAMIC, Operand.DYNAMIC],
+  operands: [REGISTER, VALUE, VALUE],
   exec: (vm, a, b, c) => {
     vm.registers[a] = (b * c) % LITERAL_MODULO;
   },
@@ -137,7 +139,7 @@ export const mult = new Operation({
 export const mod = new Operation({
   opcode: 11,
   name: 'mod',
-  operands: [Operand.REGISTER, Operand.DYNAMIC, Operand.DYNAMIC],
+  operands: [REGISTER, VALUE, VALUE],
   exec: (vm, a, b, c) => {
     vm.registers[a] = b % c;
   },
@@ -148,7 +150,7 @@ export const mod = new Operation({
 export const and = new Operation({
   opcode: 12,
   name: 'and',
-  operands: [Operand.REGISTER, Operand.DYNAMIC, Operand.DYNAMIC],
+  operands: [REGISTER, VALUE, VALUE],
   exec: (vm, a, b, c) => {
     vm.registers[a] = b & c;
   },
@@ -159,7 +161,7 @@ export const and = new Operation({
 export const or = new Operation({
   opcode: 13,
   name: 'or',
-  operands: [Operand.REGISTER, Operand.DYNAMIC, Operand.DYNAMIC],
+  operands: [REGISTER, VALUE, VALUE],
   exec: (vm, a, b, c) => {
     vm.registers[a] = b | c;
   },
@@ -170,7 +172,7 @@ export const or = new Operation({
 export const not = new Operation({
   opcode: 14,
   name: 'not',
-  operands: [Operand.REGISTER, Operand.DYNAMIC],
+  operands: [REGISTER, VALUE],
   exec: (vm, a, b) => {
     vm.registers[a] = ~b & 0x7FFF;
   },
@@ -181,7 +183,7 @@ export const not = new Operation({
 export const rmem = new Operation({
   opcode: 15,
   name: 'rmem',
-  operands: [Operand.REGISTER | Operand.TYPE_ADDRESS, Operand.DYNAMIC],
+  operands: [REGISTER, ADDRESS],
   exec: (vm, a, b) => {
     vm.registers[a] = vm.memory[b];
   },
@@ -192,7 +194,7 @@ export const rmem = new Operation({
 export const wmem = new Operation({
   opcode: 16,
   name: 'wmem',
-  operands: [Operand.DYNAMIC | Operand.TYPE_ADDRESS, Operand.DYNAMIC],
+  operands: [ADDRESS, VALUE],
   exec: (vm, a, b) => {
     vm.memory[a] = b;
   },
@@ -203,9 +205,9 @@ export const wmem = new Operation({
 export const call = new Operation({
   opcode: 17,
   name: 'call',
-  operands: [Operand.DYNAMIC | Operand.TYPE_ADDRESS],
+  operands: [ADDRESS],
   exec: (vm, a) => {
-    vm.stack.push(vm.address);
+    vm.stack.push(vm.address + 2);
     vm.address = a;
   },
 });
@@ -229,7 +231,7 @@ export const ret = new Operation({
 export const print = new Operation({
   opcode: 19,
   name: 'print',
-  operands: [Operand.DYNAMIC | Operand.TYPE_CHAR],
+  operands: [CHAR],
   exec: (vm, a) => {
     vm.write(a);
   },
@@ -242,7 +244,7 @@ export const print = new Operation({
 export const prompt = new Operation({
   opcode: 20,
   name: 'prompt',
-  operands: [Operand.REGISTER],
+  operands: [REGISTER],
   exec: async (vm, a) => {
     vm.registers[a] = await vm.prompt();
   },

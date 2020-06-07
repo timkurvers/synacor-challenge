@@ -4,7 +4,7 @@
 [![MIT License](https://badgen.net/github/license/timkurvers/synacor-challenge)](LICENSE.md)
 ![Checks](https://badgen.net/github/checks/timkurvers/synacor-challenge)
 
-JavaScript / ES6+ VM for https://challenge.synacor.com.
+JavaScript / ES6+ virtual machine for https://challenge.synacor.com.
 
 The [architecture spec] is bundled in this repository.
 

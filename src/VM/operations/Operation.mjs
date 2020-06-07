@@ -7,6 +7,10 @@ class Operation {
     this.operands = definition.operands || [];
     this.exec = definition.exec || noop;
   }
+
+  get size() {
+    return 1 + this.operands.length;
+  }
 }
 
 export default Operation;
