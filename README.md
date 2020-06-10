@@ -2,7 +2,7 @@
 
 ![Node Version](https://badgen.net/badge/node/12+/green)
 [![MIT License](https://badgen.net/github/license/timkurvers/synacor-challenge)](LICENSE.md)
-![Checks](https://badgen.net/github/checks/timkurvers/synacor-challenge)
+[![CI](https://github.com/timkurvers/synacor-challenge/workflows/ci/badge.svg)](https://github.com/timkurvers/synacor-challenge/actions?query=workflow%3Aci)
 
 JavaScript / ES6+ virtual machine for https://challenge.synacor.com.
 
