@@ -58,7 +58,7 @@ Remote debugging using :31337
 Breakpoint 1 at 0x2a
 
 (gdb) stepi
-0x00000006 in ?? ()
+0x00000004 in ?? ()
 
 (gdb) c
 Continuing.
