@@ -11,5 +11,4 @@ jobs:
           node-version: 12.x
       - run: npm install
       - run: npm run lint
-      - run: npm run debug programs/alphabet.synbin
       - run: npm start programs/alphabet.synbin
