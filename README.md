@@ -25,7 +25,7 @@ npm install
 To run a program (from the `programs`-folder) in the VM:
 
 ```bash
-npm start programs/example.synbin
+npm start programs/alphabet.synbin
 ```
 
 ## Development
@@ -33,7 +33,7 @@ npm start programs/example.synbin
 To monitor code changes and re-run programs in the VM during development:
 
 ```bash
-npm run start:dev example
+npm run start:dev programs/alphabet.synbin
 ```
 
 [Binary Ninja]: https://binary.ninja/
