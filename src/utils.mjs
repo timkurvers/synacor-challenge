@@ -1,23 +1,22 @@
-import colors from 'colors/safe';
-
 import { ADDRESS_SIZE } from './constants';
 
-export const color = {
-  address: colors.green,
-  error: colors.red.bold,
-  number: colors.cyan,
-  operation: colors.white.bold,
-  register: colors.yellow,
-  string: colors.red.bold,
+export { default as colors } from 'colors/safe';
+
+export const hex = (value, { bitSize = 0, prefix = false } = {}) => {
+  const result = value.toString(16).padStart(bitSize / 4, '0');
+  return prefix ? `0x${result}` : result;
 };
 
-export const hex = (value, bitSize = 16) => (
-  `0x${value.toString(16).toUpperCase().padStart(bitSize / 4, '0')}`
+export const hex8 = (value, { prefix = false } = {}) => (
+  hex(value, { bitSize: 8, prefix })
 );
-export const hex8 = (value) => hex(value, 8);
-export const hex16 = hex;
 
-export const hexoffset = (address, bitSize = 16) => {
-  const offset = address * ADDRESS_SIZE;
-  return hex(offset, bitSize);
-};
+export const hex16 = (value, { prefix = false } = {}) => (
+  hex(value, { bitSize: 16, prefix })
+);
+
+export const hexoffset = (address, { bitSize = 16, prefix = true } = {}) => (
+  hex(address * ADDRESS_SIZE, { bitSize, prefix })
+);
+
+export const sum = (array) => array.reduce((total, next) => total + next, 0);
