@@ -5,6 +5,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "debug": "node --experimental-modules --experimental-specifier-resolution=node debugger.mjs",
+    "debug:dev": "nodemon --no-stdin --exec npm run debug -e json,mjs,synbin",
     "lint": "eslint . --ext js,mjs",
     "start": "node --experimental-modules --experimental-specifier-resolution=node index.mjs",
     "start:dev": "nodemon --no-stdin --exec npm run start -e json,mjs,synbin"
