@@ -13,7 +13,7 @@ export const halt = new Operation({
   opcode: 0,
   name: 'halt',
   exec: (vm) => {
-    vm.end();
+    vm.halt();
   },
 });
 

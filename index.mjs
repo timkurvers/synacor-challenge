@@ -8,5 +8,6 @@ if (!path) {
 }
 
 const vm = new VM();
-const program = Program.for(path);
-vm.run(program);
+const program = new Program(path);
+vm.load(program);
+vm.run();

@@ -1,16 +1,17 @@
 import fs from 'fs';
+import path from 'path';
 
 class Program {
-  constructor(path) {
-    this.path = path;
+  constructor(givenPath) {
+    this.path = givenPath;
+  }
+
+  get fqpath() {
+    return path.resolve(this.path);
   }
 
   get data() {
-    return fs.readFileSync(this.path);
-  }
-
-  static for(path) {
-    return new Program(path);
+    return fs.readFileSync(this.fqpath);
   }
 }
 

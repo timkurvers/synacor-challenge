@@ -1,4 +1,4 @@
-/* eslint-disable no-await-in-loop */
+/* eslint-disable consistent-return, no-await-in-loop */
 
 import EventEmitter from 'events';
 
@@ -35,6 +35,10 @@ class VM extends EventEmitter {
   }
 
   initialize() {
+    this.program = null;
+    this.running = false;
+    this.halted = false;
+
     this.address = 0;
     this.memory = [];
     this.registers = new Array(8).fill(0);
@@ -42,12 +46,10 @@ class VM extends EventEmitter {
     this.input = [];
   }
 
-  get eof() {
-    return this.address >= this.memory.length;
-  }
-
-  end() {
-    this.address = this.memory.length;
+  halt() {
+    this.running = false;
+    this.halted = true;
+    this.emit('halt');
   }
 
   load(program) {
@@ -60,6 +62,7 @@ class VM extends EventEmitter {
       this.memory[i] = data.readUInt16LE(i * ADDRESS_SIZE);
     }
 
+    this.program = program;
     this.emit('load', program);
   }
 
@@ -93,30 +96,45 @@ class VM extends EventEmitter {
   }
 
   async step() {
+    if (this.halted) {
+      this.halt();
+      return;
+    }
+
     const { address } = this;
     const opcode = this.memory[address];
 
     const operation = operations.get(opcode);
     if (!operation) {
-      this.stderr(`Unknown opcode ${opcode} at ${hexoffset()}\n`);
-      this.end();
+      this.stderr(`Unknown opcode ${opcode} at ${hexoffset(address)}\n`);
+      this.halt();
       return;
     }
 
     const values = operation.operands.map(this.resolve);
     await operation.exec(this, ...values);
-    if (this.address === address) {
-      this.address += operation.size;
+
+    if (!this.halted) {
+      if (this.address === address) {
+        this.address += operation.size;
+      }
+      this.emit('pre-step');
     }
-    this.emit('step');
+
+    if (this.running) {
+      return this.step();
+    }
   }
 
-  async run(program) {
-    this.load(program);
-
-    while (!this.eof) {
-      await this.step();
+  async run() {
+    if (!this.program || this.running) {
+      return;
     }
+
+    this.running = true;
+    this.emit('run');
+
+    return this.step();
   }
 
   write(charCode) {
