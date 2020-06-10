@@ -5,8 +5,6 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "disassemble": "node --experimental-modules --experimental-specifier-resolution=node disassemble.mjs",
-    "disassemble:dev": "nodemon --no-stdin --exec npm run disassemble -e json,mjs,synbin",
     "lint": "eslint . --ext js,mjs",
     "start": "node --experimental-modules --experimental-specifier-resolution=node index.mjs",
     "start:dev": "nodemon --no-stdin --exec npm run start -e json,mjs,synbin"
