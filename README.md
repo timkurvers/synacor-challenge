@@ -28,6 +28,66 @@ To run a program (from the `programs`-folder) in the VM:
 npm start programs/alphabet.synbin
 ```
 
+## Debugging
+
+Debuggers like `gdb` do not support arbitrary architectures like Synacor out of
+the box.
+
+However, by piggybacking on the [GDB remote protocol] and replicating packets
+sent back and forth we can trick `gdb` into happily controlling a Synacor program
+whilst running in a JavaScript VM within a Node.js process. 🤯
+
+Features supported:
+
+- Breakpoints (`break`)
+- Control flow (stepping using `stepi` and `continue`)
+
+To debug a program and listen for "remote gdb" connections on default port `31337`:
+
+```bash
+npm run debug programs/alphabet.synbin
+```
+
+Fire up `gdb` in a separate shell and attach to the remote target:
+
+```bash
+(gdb) target remote :31337
+Remote debugging using :31337
+0x00000000 in ?? ()
+(gdb) b *0x2a
+Breakpoint 1 at 0x2a
+
+(gdb) stepi
+0x00000006 in ?? ()
+
+(gdb) c
+Continuing.
+
+Breakpoint 1, 0x0000002a in ?? ()
+(gdb) c
+Continuing.
+
+Program terminated with signal SIGTERM, Terminated.
+```
+
+### Binary Ninja
+
+See [synacor-binja-plugin] for debugging Synacor programs using [Binary Ninja].
+
+### Options
+
+To listen on a different port use `GDB_PORT`:
+
+```bash
+GDB_PORT=1337 npm run debug programs/alphabet.synbin
+```
+
+To log all GDB remote protocol traffic use `GDB_LOG`:
+
+```bash
+GDB_LOG= npm run debug programs/alphabet.synbin
+```
+
 ## Development
 
 To monitor code changes and re-run programs in the VM during development:
@@ -36,7 +96,14 @@ To monitor code changes and re-run programs in the VM during development:
 npm run start:dev programs/alphabet.synbin
 ```
 
+Similary, for the debugger during development:
+
+```bash
+npm run debug:dev programs/alphabet.synbin
+```
+
 [Binary Ninja]: https://binary.ninja/
+[GDB Remote Protocol]: https://sourceware.org/gdb/current/onlinedocs/gdb/Remote-Protocol.html
 [Node.js]: https://nodejs.org/en/
 [architecture spec]: https://github.com/timkurvers/synacor-challenge/blob/master/ARCH-SPEC.txt
 [synacor-binja-plugin]: https://github.com/timkurvers/synacor-binja-plugin/
