@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE target SYSTEM "gdb-target.dtd">
+<target version="1.0">
+  <architecture>synacor</architecture>
+  <feature name="synacor">
+    <reg name="R0" bitsize="16" type="int" />
+    <reg name="R1" bitsize="16" type="int" />
+    <reg name="R2" bitsize="16" type="int" />
+    <reg name="R3" bitsize="16" type="int" />
+    <reg name="R4" bitsize="16" type="int" />
+    <reg name="R5" bitsize="16" type="int" />
+    <reg name="R6" bitsize="16" type="int" />
+    <reg name="R7" bitsize="16" type="int" />
+
+    <reg name="ip" bitsize="16" type="code_ptr" />
+    <reg name="sp" bitsize="16" type="data_ptr" />
+  </feature>
+</target>
