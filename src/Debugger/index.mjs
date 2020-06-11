@@ -21,12 +21,17 @@ class Debugger extends VM {
     // Stores and handles breakpoints
     this.breakpoints = new Set();
     this.on('pre-step', () => {
-      const offset = this.address * ADDRESS_SIZE;
-      if (this.breakpoints.has(offset)) {
+      if (this.break) {
         this.running = false;
         this.emit('break');
       }
     });
+  }
+
+  // Whether currently on a breakpoint
+  get break() {
+    const offset = this.address * ADDRESS_SIZE;
+    return this.breakpoints.has(offset);
   }
 
   load(program) {
