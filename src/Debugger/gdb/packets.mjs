@@ -240,10 +240,7 @@ export const T = {
 export const c = {
   match: /^c$/,
   process: (client, { dbg }) => {
-    if (!dbg.running) {
-      dbg.run();
-    }
-    dbg.running = true;
+    dbg.run();
   },
 };
 
