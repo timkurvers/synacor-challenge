@@ -15,7 +15,7 @@ class GDBServer {
     this.clients = new Set();
 
     dbg.on('break', () => {
-      this.reply(`T${hex8(signal.TRAP)}`);
+      this.reply(`T${hex8(signal.TRAP)};swbreak:;`);
     });
 
     dbg.on('halt', () => {

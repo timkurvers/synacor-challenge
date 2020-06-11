@@ -29,7 +29,8 @@ export const status = {
     if (dbg.halted) {
       client.reply(`W${hex8(signal.TERM)}`);
     } else {
-      client.reply(`T${hex8(signal.TRAP)};thread:${hex8(threadId)};`);
+      const swbreak = dbg.break ? 'swbreak:;' : '';
+      client.reply(`T${hex8(signal.TRAP)};thread:${hex8(threadId)};${swbreak}`);
     }
   },
 };
@@ -154,7 +155,7 @@ export const qC = {
 export const qSupported = {
   match: /^qSupported/,
   process: (client) => {
-    client.reply('qXfer:features:read+;qXfer:exec-file:read+;vCont+');
+    client.reply('qXfer:features:read+;qXfer:exec-file:read+;vCont+;swbreak+');
   },
 };
 
@@ -247,9 +248,11 @@ export const c = {
 // Thread control: instruction step
 export const s = {
   match: /^s$/,
-  process: (client, { dbg }) => {
-    dbg.step();
-    client.reply(`S${hex8(signal.TRAP)}`);
+  process: async (client, { dbg }) => {
+    await dbg.step();
+    if (!dbg.break) {
+      client.reply(`T${hex8(signal.TRAP)}`);
+    }
   },
 };
 
@@ -261,8 +264,10 @@ export const vCont = {
     if (action === 'c' && !dbg.running) {
       dbg.run();
     } else if (action === 's' && !dbg.running) {
-      dbg.step();
-      client.reply(`S${hex8(signal.TERM)}`);
+      await dbg.step();
+      if (!dbg.break) {
+        client.reply(`T${hex8(signal.TRAP)}`);
+      }
     } else {
       client.reply();
     }
