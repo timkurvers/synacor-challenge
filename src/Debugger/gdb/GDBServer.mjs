@@ -19,7 +19,7 @@ class GDBServer {
     });
 
     dbg.on('halt', () => {
-      this.reply(`X${hex8(signal.TERM)}`);
+      this.reply(`W${hex8(signal.TERM)}`);
     });
 
     this._server = net.createServer((socket) => {

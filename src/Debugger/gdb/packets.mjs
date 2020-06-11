@@ -27,7 +27,7 @@ export const status = {
   match: /^\?/,
   process: (client, { dbg }) => {
     if (dbg.halted) {
-      client.reply(`X${hex8(signal.TERM)}`);
+      client.reply(`W${hex8(signal.TERM)}`);
     } else {
       client.reply(`T${hex8(signal.TRAP)};thread:${hex8(threadId)};`);
     }
