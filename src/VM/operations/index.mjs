@@ -219,7 +219,7 @@ export const ret = new Operation({
   name: 'ret',
   exec: (vm) => {
     if (!vm.stack.length) {
-      halt(vm);
+      vm.halt();
       return;
     }
     vm.address = vm.stack.pop();
