@@ -80,7 +80,7 @@ export const k = {
 // Memory access
 export const m = {
   match: /^m([a-f\d]+),([a-f\d]+)/i,
-  process: (client, { match, dbg }) => {
+  process: (client, { dbg, match }) => {
     const offset = parseInt(match[1], 16);
     const length = parseInt(match[2], 16);
 
@@ -101,7 +101,7 @@ export const m = {
 // Read register
 export const p = {
   match: /^p([a-f\d]+)/i,
-  process: (client, { match, dbg }) => {
+  process: (client, { dbg, match }) => {
     const regnum = parseInt(match[1], 16);
 
     let value = null;
@@ -186,7 +186,7 @@ export const qT = {
 // Query: Read executable file
 export const qXferExecFileRead = {
   match: /^qXfer:exec-file:read:(.*?):([a-f\d]+),([a-f\d]+)/i,
-  process: (client, { match, dbg }) => {
+  process: (client, { dbg, match }) => {
     const [_, annex, hoffset, hlength] = match;
     const offset = parseInt(hoffset, 16);
     const length = parseInt(hlength, 16);
@@ -259,7 +259,7 @@ export const s = {
 // Thread control: continue + instruction step
 export const vCont = {
   match: /^vCont;(.)/,
-  process: (client, { match, dbg }) => {
+  process: async (client, { dbg, match }) => {
     const action = match[1];
     if (action === 'c' && !dbg.running) {
       dbg.run();
