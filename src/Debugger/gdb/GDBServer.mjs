@@ -15,15 +15,11 @@ class GDBServer {
     this.clients = new Set();
 
     dbg.on('break', () => {
-      for (const client of this.clients) {
-        client.reply(`T${hex8(signal.TRAP)}`);
-      }
+      this.reply(`T${hex8(signal.TRAP)}`);
     });
 
     dbg.on('halt', () => {
-      for (const client of this.clients) {
-        client.reply(`X${hex8(signal.TERM)}`);
-      }
+      this.reply(`X${hex8(signal.TERM)}`);
     });
 
     this._server = net.createServer((socket) => {
@@ -82,6 +78,12 @@ class GDBServer {
     this._server.listen(port, () => {
       console.log(`gdb server listening on port ${port}`);
     });
+  }
+
+  reply(msg) {
+    for (const client of this.clients) {
+      client.reply(msg);
+    }
   }
 }
 
