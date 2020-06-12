@@ -99,13 +99,26 @@ export const m = {
   },
 };
 
-// Read register
-export const p = {
-  match: /^p([a-f\d]+)/i,
+// Set/read register
+export const P = {
+  match: /^(P)([a-f\d]+)(?:=([a-f\d]+))?/i,
   process: (client, { dbg, match }) => {
-    const regnum = parseInt(match[1], 16);
+    const regnum = parseInt(match[2], 16);
 
     let value = null;
+
+    if (match[1] === 'P') {
+      value = parseInt(match[3], 16);
+      if (regnum in dbg.registers) {
+        dbg.registers[regnum] = value;
+      } else if (regnum === register.IP) {
+        dbg.address = value / ADDRESS_SIZE;
+      } else {
+        client.reply(`E${errno.ENOENT}`);
+        return;
+      }
+    }
+
     if (regnum in dbg.registers) {
       value = dbg.registers[regnum];
     } else if (regnum === register.IP) {
