@@ -1,6 +1,7 @@
 /* eslint-disable consistent-return, no-await-in-loop */
 
 import EventEmitter from 'events';
+import Promise from 'bluebird';
 
 import { hexoffset } from '../utils';
 
@@ -14,6 +15,8 @@ import {
 
 import operations from './operations/lookup';
 
+Promise.config({ cancellation: true });
+
 class VM extends EventEmitter {
   constructor() {
     super();
@@ -21,11 +24,14 @@ class VM extends EventEmitter {
     this.initialize();
 
     // Standard in/out/err hooks (may be overwritten)
-    this.stdin = () => new Promise((resolve) => {
+    this.stdin = () => new Promise((resolve, reject, onCancel) => {
       const onData = (charCodes) => {
         process.stdin.removeListener('data', onData);
         resolve(charCodes);
       };
+      onCancel(() => {
+        process.stdin.removeListener('data', onData);
+      });
       process.stdin.on('data', onData);
     });
     this.stdout = (str) => process.stdout.write(str);

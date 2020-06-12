@@ -17,7 +17,7 @@ const __dirname = dirname(import.meta.url);
 export const interrupt = {
   match: /^\x03/,
   process: (client, { dbg }) => {
-    dbg.running = false;
+    dbg.interrupt();
     client.reply(`T${hex8(signal.TRAP)}`);
   },
 };

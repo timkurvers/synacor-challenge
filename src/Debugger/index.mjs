@@ -18,6 +18,14 @@ class Debugger extends VM {
     // Path to process map (see below)
     this.procmapPath = null;
 
+    // Facilitate for cancelling stdin promise when debugger interrupts
+    this.stdinPromise = null;
+    const { stdin } = this;
+    this.stdin = () => {
+      this.stdinPromise = stdin();
+      return this.stdinPromise;
+    };
+
     // Stores and handles breakpoints
     this.breakpoints = new Set();
     this.on('pre-step', () => {
@@ -32,6 +40,13 @@ class Debugger extends VM {
   get break() {
     const offset = this.address * ADDRESS_SIZE;
     return this.breakpoints.has(offset);
+  }
+
+  interrupt() {
+    this.running = false;
+    if (this.stdinPromise && !this.stdinPromise.isCancelled()) {
+      this.stdinPromise.cancel();
+    }
   }
 
   load(program) {
