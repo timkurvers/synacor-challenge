@@ -29,6 +29,7 @@ export const status = {
     if (dbg.halted) {
       client.reply(`W${hex8(signal.TERM)}`);
     } else {
+      dbg.interrupt();
       const swbreak = dbg.break ? 'swbreak:;' : '';
       client.reply(`T${hex8(signal.TRAP)};thread:${hex8(threadId)};${swbreak}`);
     }
