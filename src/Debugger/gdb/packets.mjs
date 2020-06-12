@@ -221,14 +221,16 @@ export const qXferFeaturesRead = {
     const length = parseInt(hlength, 16);
 
     if (annex === 'target.xml') {
-      const xml = fs.readFileSync(path.join(__dirname, annex), 'utf8');
-      const stripped = xml.replace(/\n| {2}/g, '');
-      const slice = stripped.slice(offset, length);
-      if (slice.length) {
-        client.reply(`m${encode(slice)}`);
+      const fd = fs.openSync(path.join(__dirname, annex));
+      const buffer = Buffer.alloc(length);
+      const bytesRead = fs.readSync(fd, buffer, 0, length, offset);
+      const data = encode(buffer.slice(0, bytesRead));
+      if (bytesRead) {
+        client.reply(`m${encode(data)}`);
       } else {
         client.reply('l');
       }
+      fs.closeSync(fd);
     } else {
       client.reply('E00');
     }
