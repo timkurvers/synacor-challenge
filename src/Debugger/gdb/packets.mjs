@@ -155,7 +155,14 @@ export const qC = {
 export const qSupported = {
   match: /^qSupported/,
   process: (client) => {
-    client.reply('qXfer:features:read+;qXfer:exec-file:read+;vCont+;swbreak+');
+    const features = [
+      'qXfer:features:read+',
+      'qXfer:exec-file:read+',
+      'QStartNoAckMode+',
+      'swbreak+',
+      'vCont+',
+    ];
+    client.reply(features.join(';'));
   },
 };
 
