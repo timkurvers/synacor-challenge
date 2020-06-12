@@ -17,7 +17,6 @@ class GDBClient {
 
   ok() {
     this.reply('OK');
-    log();
   }
 
   reply(data = '') {
