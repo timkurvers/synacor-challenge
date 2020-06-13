@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 
 import { ADDRESS_SIZE } from '../../constants';
-import { hex8, hex16 } from '../../utils';
+import { hex8, hex16, hex32 } from '../../utils';
 
 import {
   errno, register, signal, threadId,
@@ -52,11 +52,11 @@ export const g = {
     values[register.IP] = dbg.address * ADDRESS_SIZE;
     // TODO: Properly communicate stack values with GDB / Binary Ninja
     values[register.SP] = dbg.memory.length * ADDRESS_SIZE * 2;
+
     let result = '';
-    for (const value of values) {
-      const hex = hex16(value);
-      result += hex.slice(2, 4);
-      result += hex.slice(0, 2);
+    for (const [index, value] of dbg.registers.entries()) {
+      const hex = index >= register.IP ? hex32 : hex16;
+      result += hex(value, { le: true });
     }
     client.reply(result);
   },
@@ -92,9 +92,7 @@ export const m = {
     let result = '';
     for (let i = offset; i < end; i += ADDRESS_SIZE) {
       const value = memory[i / ADDRESS_SIZE];
-      const hex = hex16(value);
-      result += hex.slice(2, 4);
-      result += hex.slice(0, 2);
+      result += hex16(value, { le: true });
     }
     client.reply(result);
   },
@@ -122,20 +120,17 @@ export const P = {
 
     if (regnum in dbg.registers) {
       value = dbg.registers[regnum];
+      client.reply(hex16(value, { le: true }));
     } else if (regnum === register.IP) {
       value = dbg.address * ADDRESS_SIZE;
+      client.reply(hex32(value, { le: true }));
     } else if (regnum === register.SP) {
       // TODO: Properly communicate stack values with GDB / Binary Ninja
       value = dbg.memory.length * ADDRESS_SIZE * 2;
+      client.reply(hex32(value, { le: true }));
     } else {
-      client.reply(`E${errno.ENOENT}`);
-      return;
+      client.reply('xxxx');
     }
-
-    const hex = hex16(value);
-    let result = hex.slice(2, 4);
-    result += hex.slice(0, 2);
-    client.reply(result);
   },
 };
 

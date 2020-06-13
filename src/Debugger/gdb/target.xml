@@ -12,7 +12,7 @@
     <reg name="R6" bitsize="16" type="int" />
     <reg name="R7" bitsize="16" type="int" />
 
-    <reg name="ip" bitsize="16" type="code_ptr" />
-    <reg name="sp" bitsize="16" type="data_ptr" />
+    <reg name="ip" bitsize="32" type="code_ptr" />
+    <reg name="sp" bitsize="32" type="data_ptr" />
   </feature>
 </target>
