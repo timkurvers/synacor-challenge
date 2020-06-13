@@ -107,11 +107,11 @@ export const P = {
     let value = null;
 
     if (match[1] === 'P') {
-      value = parseInt(match[3], 16);
+      value = Buffer.from(match[3], 'hex');
       if (regnum in dbg.registers) {
-        dbg.registers[regnum] = value;
+        dbg.registers[regnum] = value.readInt16LE();
       } else if (regnum === register.IP) {
-        dbg.address = value / ADDRESS_SIZE;
+        dbg.address = value.readInt32LE() / ADDRESS_SIZE;
       } else {
         client.reply(`E${errno.ENOENT}`);
         return;
