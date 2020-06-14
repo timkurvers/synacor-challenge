@@ -112,8 +112,8 @@ class VM extends EventEmitter {
     return value;
   }
 
-  resolve(operand, index) {
-    const value = this.memory[this.address + 1 + index];
+  resolve(operand) {
+    const value = this.read();
     if (operand === REGISTER) {
       return value % LITERAL_MODULO;
     }
@@ -133,7 +133,7 @@ class VM extends EventEmitter {
     }
 
     const { address } = this;
-    const opcode = this.memory[address];
+    const opcode = this.read();
 
     const operation = operations.get(opcode);
     if (!operation) {
@@ -146,9 +146,6 @@ class VM extends EventEmitter {
     await operation.exec(this, ...values);
 
     if (!this.halted) {
-      if (this.address === address) {
-        this.address += operation.size;
-      }
       this.emit('pre-step');
     }
 

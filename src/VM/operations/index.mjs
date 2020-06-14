@@ -207,7 +207,7 @@ export const call = new Operation({
   name: 'call',
   operands: [ADDRESS],
   exec: (vm, a) => {
-    vm.stack.push(vm.address + 2);
+    vm.stack.push(vm.address);
     vm.address = a;
   },
 });
