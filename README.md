@@ -28,7 +28,26 @@ To run a program (from the `programs`-folder) in the VM:
 npm start programs/alphabet.synbin
 ```
 
-## Debugging
+### Special commands
+
+Whenever the program in the VM is awaiting input, commands prefixed with `$` are
+executed as raw JavaScript code using [eval].
+
+This may be used to easily inspect and mutate program state at runtime:
+
+```
+$ this.registers
+[
+  25975, 25974, 26006,
+      0,   101,     0,
+      0,     0
+]
+
+$ this.address = 0xa0a
+2570
+```
+
+## External Debugging
 
 Debuggers like `gdb` do not support arbitrary architectures like Synacor out of
 the box.
@@ -106,4 +125,5 @@ npm run debug:dev programs/alphabet.synbin
 [GDB Remote Protocol]: https://sourceware.org/gdb/current/onlinedocs/gdb/Remote-Protocol.html
 [Node.js]: https://nodejs.org/en/
 [architecture spec]: https://github.com/timkurvers/synacor-challenge/blob/master/ARCH-SPEC.txt
+[eval]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval
 [synacor-binja-plugin]: https://github.com/timkurvers/synacor-binja-plugin/

@@ -52,6 +52,27 @@ class VM extends EventEmitter {
     this.input = [];
   }
 
+  eval() {
+    // Detect debug commands starting with '$'
+    if (this.input[0] === 0x24) {
+      // And ending with '\n'
+      const end = this.input.findIndex((c) => c === 0x0A);
+      if (end !== -1) {
+        this.input.shift();
+        const chars = this.input.splice(0, end);
+        const cmd = Buffer.from(chars).toString();
+        try {
+          const result = eval(cmd); // eslint-disable-line no-eval
+          if (result !== undefined) {
+            console.log(result);
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+  }
+
   halt() {
     this.running = false;
     this.halted = true;
@@ -73,11 +94,15 @@ class VM extends EventEmitter {
   }
 
   async prompt() {
+    this.eval();
     if (this.input.length) {
       return this.input.shift();
     }
-    const charCodes = await this.stdin();
-    this.input.push(...charCodes);
+    while (!this.input.length) {
+      const charCodes = await this.stdin();
+      this.input.push(...charCodes);
+      this.eval();
+    }
     return this.input.shift();
   }
 
