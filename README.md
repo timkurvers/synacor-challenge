@@ -28,6 +28,18 @@ To run a program (from the `programs`-folder) in the VM:
 npm start programs/alphabet.synbin
 ```
 
+### Scenarios
+
+Rather than typing in user input or commands manually, a scenario can be fed
+directly via `stdin`:
+
+```shell
+cat scenarios/challenge.txt - | npm run start programs/challenge.synbin
+```
+
+Note: `-` is required to ensure the VM does not terminate after the scenario is
+exhausted, but rather stays alive and accepts further input.
+
 ### Special commands
 
 Whenever the program in the VM is awaiting input, commands prefixed with `$` are
