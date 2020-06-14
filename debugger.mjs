@@ -7,9 +7,10 @@ if (!path) {
   process.exit(1);
 }
 
+const host = process.env.GDB_HOST || 'localhost';
 const port = process.env.GDB_PORT || 31337;
 
 const dbg = new Debugger();
 const program = new Program(path);
 dbg.load(program);
-dbg.gdb.listen(port);
+dbg.gdb.listen(host, port);

@@ -42,7 +42,7 @@ Features supported:
 - Breakpoints (`break`)
 - Control flow (stepping using `stepi` and `continue`)
 
-To debug a program and listen for "remote gdb" connections on default port `31337`:
+To debug a program and listen for "remote gdb" connections on `localhost:31337`:
 
 ```bash
 npm run debug programs/alphabet.synbin
@@ -76,10 +76,10 @@ See [synacor-binja-plugin] for debugging Synacor programs using [Binary Ninja].
 
 ### Options
 
-To listen on a different port use `GDB_PORT`:
+To listen on a different host/port use `GDB_HOST` and `GDB_PORT`:
 
 ```bash
-GDB_PORT=1337 npm run debug programs/alphabet.synbin
+GDB_HOST=customhost GDB_PORT=1337 npm run debug programs/alphabet.synbin
 ```
 
 To log all GDB remote protocol traffic use `GDB_LOG`:

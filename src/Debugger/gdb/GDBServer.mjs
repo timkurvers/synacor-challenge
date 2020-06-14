@@ -74,9 +74,9 @@ class GDBServer {
     });
   }
 
-  listen(port) {
-    this._server.listen(port, () => {
-      console.log(`gdb server listening on port ${port}`);
+  listen(host, port) {
+    this._server.listen(port, host, () => {
+      console.log(`gdb server listening on ${host}:${port}`);
     });
   }
 
