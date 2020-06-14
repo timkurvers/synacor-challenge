@@ -12,3 +12,4 @@ jobs:
       - run: npm install
       - run: npm run lint
       - run: npm start programs/alphabet.synbin
+      - run: npm start programs/self-modifying.synbin
