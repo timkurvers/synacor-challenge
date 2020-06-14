@@ -31,7 +31,7 @@ npm start programs/alphabet.synbin
 ### Special commands
 
 Whenever the program in the VM is awaiting input, commands prefixed with `$` are
-executed as raw JavaScript code using [eval].
+executed as JavaScript code using [eval].
 
 This may be used to easily inspect and mutate program state at runtime:
 
