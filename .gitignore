@@ -2,3 +2,4 @@
 /notes/
 /programs/*
 !/programs/alphabet.synbin
+!/programs/self-modifying.synbin
