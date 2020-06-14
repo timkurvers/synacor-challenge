@@ -230,7 +230,7 @@ export const ret = new Operation({
 //   write the character represented by ascii code <a> to the terminal
 export const print = new Operation({
   opcode: 19,
-  name: 'print',
+  name: 'out',
   operands: [CHAR],
   exec: (vm, a) => {
     vm.write(a);
@@ -243,7 +243,7 @@ export const print = new Operation({
 //   read whole lines from the keyboard and trust that they will be fully read
 export const prompt = new Operation({
   opcode: 20,
-  name: 'prompt',
+  name: 'in',
   operands: [REGISTER],
   exec: async (vm, a) => {
     vm.registers[a] = await vm.prompt();
