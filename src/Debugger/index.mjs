@@ -34,6 +34,12 @@ class Debugger extends VM {
         this.emit('break');
       }
     });
+
+    // To allow interrupts to fire when the VM is busy (infinite loops or simply
+    // intensive computations), the debugger occasionally has to process incoming
+    // signals (such as SIGINT). These specify the window and the last occurence.
+    this.signalWindow = 1000;
+    this.lastSignalWindow = new Date();
   }
 
   // Whether currently on a breakpoint
@@ -60,6 +66,19 @@ class Debugger extends VM {
     this.procmapPath = path.join(os.tmpdir(), 'synacor-dbg-procmap.txt');
     fs.writeFileSync(this.procmapPath, procmap);
     console.log('wrote procmap file', this.procmapPath);
+  }
+
+  next() {
+    const now = new Date();
+
+    // When past the signal window, process incoming signals (such as SIGINT) to
+    // allow the VM to be interrupted when it is busy (infinite loops or simply
+    // intensive computations)
+    if (now - this.lastSignalWindow > this.signalWindow) {
+      this.lastSignalWindow = now;
+      return setImmediate(this.step);
+    }
+    return this.step();
   }
 }
 

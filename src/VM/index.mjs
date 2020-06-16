@@ -38,6 +38,7 @@ class VM extends EventEmitter {
     this.stderr = (str) => process.stderr.write(str);
 
     this.resolve = this.resolve.bind(this);
+    this.step = this.step.bind(this);
   }
 
   initialize() {
@@ -150,8 +151,12 @@ class VM extends EventEmitter {
     }
 
     if (this.running) {
-      return this.step();
+      return this.next();
     }
+  }
+
+  next() {
+    return this.step();
   }
 
   async run() {
