@@ -48,6 +48,7 @@ class VM extends EventEmitter {
 
     this.address = 0;
     this.memory = [];
+    this.rawMemory = [];
     this.registers = new Array(8).fill(0);
     this.stack = [];
     this.input = [];
@@ -89,6 +90,7 @@ class VM extends EventEmitter {
     for (let i = 0; i < size; ++i) {
       this.memory[i] = data.readUInt16LE(i * ADDRESS_SIZE);
     }
+    this.rawMemory = Buffer.from(this.memory.buffer);
 
     this.program = program;
     this.emit('load', program);

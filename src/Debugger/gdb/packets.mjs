@@ -86,14 +86,9 @@ export const m = {
     const offset = parseInt(match[1], 16);
     const length = parseInt(match[2], 16);
 
-    const { memory } = dbg;
-    const end = Math.min(offset + length, memory.length * ADDRESS_SIZE);
-
-    let result = '';
-    for (let i = offset; i < end; i += ADDRESS_SIZE) {
-      const value = memory[i / ADDRESS_SIZE];
-      result += hex16(value, { le: true });
-    }
+    const { rawMemory } = dbg;
+    const end = Math.min(offset + length, rawMemory.length);
+    const result = rawMemory.slice(offset, end).toString('hex');
     client.reply(result);
   },
 };
