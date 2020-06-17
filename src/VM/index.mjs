@@ -46,6 +46,13 @@ class VM extends EventEmitter {
     this.stdout = (str) => process.stdout.write(str);
     this.stderr = (str) => process.stderr.write(str);
 
+    // Handle initial piped input (if any)
+    if (!process.stdin.isTTY) {
+      this.stdin().then((charCodes) => {
+        this.input.push(...charCodes);
+      });
+    }
+
     this.resolve = this.resolve.bind(this);
     this.step = this.step.bind(this);
   }
