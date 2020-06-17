@@ -1,9 +1,10 @@
 /* eslint-disable consistent-return, no-await-in-loop */
 
 import EventEmitter from 'events';
+
 import Promise from 'bluebird';
 
-import { hexoffset } from '../utils';
+import { hex, hexoffset } from '../utils';
 
 import {
   ADDRESS_SIZE,
@@ -24,16 +25,24 @@ class VM extends EventEmitter {
     this.initialize();
 
     // Standard in/out/err hooks (may be overwritten)
-    this.stdin = () => new Promise((resolve, reject, onCancel) => {
-      const onData = (charCodes) => {
-        process.stdin.removeListener('data', onData);
-        resolve(charCodes);
-      };
-      onCancel(() => {
-        process.stdin.removeListener('data', onData);
+    this.stdin = () => {
+      this.stdin.promise = new Promise((resolve, reject, onCancel) => {
+        const onData = (charCodes) => {
+          process.stdin.removeListener('data', onData);
+          resolve(charCodes);
+        };
+        onCancel(() => {
+          process.stdin.removeListener('data', onData);
+        });
+        process.stdin.on('data', onData);
       });
-      process.stdin.on('data', onData);
-    });
+      return this.stdin.promise;
+    };
+    this.stdin.cancel = () => {
+      if (this.stdin.promise && !this.stdin.promise.isCancelled()) {
+        this.stdin.promise.cancel();
+      }
+    };
     this.stdout = (str) => process.stdout.write(str);
     this.stderr = (str) => process.stderr.write(str);
 
@@ -54,24 +63,30 @@ class VM extends EventEmitter {
     this.input = [];
   }
 
-  eval() {
-    // Detect debug commands starting with '$'
-    if (this.input[0] === 0x24) {
-      // And ending with '\n'
-      const end = this.input.findIndex((c) => c === 0x0A);
-      if (end !== -1) {
-        this.input.shift();
-        const chars = this.input.splice(0, end);
-        const cmd = Buffer.from(chars).toString();
-        try {
-          const result = eval(cmd); // eslint-disable-line no-eval
-          if (result !== undefined) {
-            console.log(result);
-          }
-        } catch (e) {
-          console.error(e);
-        }
+  eval(cmd) {
+    try {
+      // eslint-disable-next-line no-new-func
+      const fn = new Function('vm', 'hex', 'hexoffset', `with (vm) {
+        return (${cmd})
+      }`);
+      const result = fn(this, hex, hexoffset);
+      if (result !== undefined) {
+        console.log(result);
       }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  // Processes all pending debug commands (starting with '$') from given queue
+  evalPending(queue = this.input) {
+    while (queue[0] === 0x24) {
+      queue.shift();
+      const nl = queue.findIndex((c) => c === 0x0A);
+      const end = Math.min(nl, queue.length - 1);
+      const chars = queue.splice(0, end + 1);
+      const cmd = Buffer.from(chars).toString();
+      this.eval(cmd);
     }
   }
 
@@ -97,14 +112,11 @@ class VM extends EventEmitter {
   }
 
   async prompt() {
-    this.eval();
-    if (this.input.length) {
-      return this.input.shift();
-    }
+    this.evalPending();
     while (!this.input.length) {
       const charCodes = await this.stdin();
       this.input.push(...charCodes);
-      this.eval();
+      this.evalPending();
     }
     return this.input.shift();
   }
@@ -130,6 +142,7 @@ class VM extends EventEmitter {
   }
 
   async step() {
+    this.stdin.cancel();
     if (this.halted) {
       this.halt();
       return;

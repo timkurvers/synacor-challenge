@@ -1,3 +1,5 @@
+/* eslint-disable no-await-in-loop, no-cond-assign */
+
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
@@ -17,14 +19,6 @@ class Debugger extends VM {
 
     // Path to process map (see below)
     this.procmapPath = null;
-
-    // Facilitate for cancelling stdin promise when debugger interrupts
-    this.stdinPromise = null;
-    const { stdin } = this;
-    this.stdin = () => {
-      this.stdinPromise = stdin();
-      return this.stdinPromise;
-    };
 
     // Stores and handles breakpoints
     this.breakpoints = new Set();
@@ -48,10 +42,18 @@ class Debugger extends VM {
     return this.breakpoints.has(offset);
   }
 
-  interrupt() {
+  async interrupt() {
     this.running = false;
-    if (this.stdinPromise && !this.stdinPromise.isCancelled()) {
-      this.stdinPromise.cancel();
+    this.stdin.cancel();
+
+    // Only allow executing debug commands while interrupted
+    let charCodes;
+    while (charCodes = await this.stdin()) {
+      const input = [...charCodes];
+      this.evalPending(input);
+      if (input.length) {
+        console.log('(can only execute debug commands while interrupted)');
+      }
     }
   }
 

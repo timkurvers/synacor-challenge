@@ -40,24 +40,26 @@ cat scenarios/challenge.txt - | npm run start programs/challenge.synbin
 Note: `-` is required to ensure the VM does not terminate after the scenario is
 exhausted, but rather stays alive and accepts further input.
 
-### Special commands
+### Debug commands
 
-Whenever the program in the VM is awaiting input, commands prefixed with `$` are
-executed as JavaScript code using [eval].
+Whenever the program in the VM is awaiting input or the debugger is interrupted,
+commands prefixed with `$` are executed as JavaScript code using [eval].
 
-This may be used to easily inspect and mutate program state at runtime:
+Use this to easily inspect and mutate program state:
 
 ```
-$ this.registers
+$ registers
 [
   25975, 25974, 26006,
       0,   101,     0,
       0,     0
 ]
 
-$ this.address = 0xa0a
+$ address = 0xa0a
 2570
 ```
+
+For convenience the `hex` and `hexoffset` helpers are also available.
 
 ## External Debugging
 
