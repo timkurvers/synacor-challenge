@@ -59,7 +59,19 @@ $ address = 0xa0a
 2570
 ```
 
-For convenience the `hex` and `hexoffset` helpers are also available.
+For convenience the `hex` and `hexoffset` helpers are also available:
+
+```
+$ hexoffset(address)
+0xa0a
+```
+
+To dump raw memory for the current program for analysis:
+
+```
+$ dump()
+raw memory dumped to: programs/challenge-20200618T223617810Z.synbin
+```
 
 ## External Debugging
 

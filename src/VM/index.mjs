@@ -1,6 +1,8 @@
 /* eslint-disable consistent-return, no-await-in-loop */
 
 import EventEmitter from 'events';
+import fs from 'fs';
+import path from 'path';
 
 import Promise from 'bluebird';
 
@@ -67,6 +69,19 @@ class VM extends EventEmitter {
     this.registers = new Array(8).fill(0);
     this.stack = [];
     this.input = [];
+  }
+
+  dump() {
+    if (!this.program) {
+      return;
+    }
+
+    const { dir, ext, name } = path.parse(this.program.path);
+    const suffix = new Date().toISOString().replace(/-|:|\./g, '');
+    const outpath = path.join(dir, `${name}-${suffix}${ext}`);
+
+    fs.writeFileSync(outpath, this.rawMemory);
+    console.log('raw memory dumped to:', outpath);
   }
 
   eval(cmd) {
