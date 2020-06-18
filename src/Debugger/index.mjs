@@ -42,19 +42,22 @@ class Debugger extends VM {
     return this.breakpoints.has(offset);
   }
 
-  async interrupt() {
+  interrupt() {
     this.running = false;
     this.stdin.cancel();
 
-    // Only allow executing debug commands while interrupted
-    let charCodes;
-    while (charCodes = await this.stdin()) {
-      const input = [...charCodes];
-      this.evalPending(input);
-      if (input.length) {
-        console.log('(can only execute debug commands while interrupted)');
+    // Delay execution to prevent promise cancellation mixups
+    setImmediate(async () => {
+      // Only allow executing debug commands while interrupted
+      let charCodes;
+      while (charCodes = await this.stdin()) {
+        const input = [...charCodes];
+        this.evalPending(input);
+        if (input.length) {
+          console.log('(can only execute debug commands while interrupted)');
+        }
       }
-    }
+    });
   }
 
   load(program) {

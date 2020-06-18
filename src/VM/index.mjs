@@ -28,13 +28,12 @@ class VM extends EventEmitter {
     this.stdin = () => {
       this.stdin.promise = new Promise((resolve, reject, onCancel) => {
         const onData = (charCodes) => {
-          process.stdin.removeListener('data', onData);
           resolve(charCodes);
         };
         onCancel(() => {
           process.stdin.removeListener('data', onData);
         });
-        process.stdin.on('data', onData);
+        process.stdin.once('data', onData);
       });
       return this.stdin.promise;
     };
