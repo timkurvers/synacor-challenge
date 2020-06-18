@@ -115,6 +115,16 @@ Continuing.
 Program terminated with signal SIGTERM, Terminated.
 ```
 
+The debugger allows interrupting a running program by sending Ctrl+C from `gdb`:
+
+```bash
+(gdb) c
+Continuing.
+^C
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x00002f44 in ?? ()
+```
+
 ### Binary Ninja
 
 See [synacor-binja-plugin] for debugging Synacor programs using [Binary Ninja].
