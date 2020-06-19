@@ -24,7 +24,7 @@ class Debugger extends VM {
     this.breakpoints = new Set();
     this.on('pre-step', () => {
       if (this.break) {
-        this.running = false;
+        this.interrupt();
         this.emit('break');
       }
     });
