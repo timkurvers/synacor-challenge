@@ -53,3 +53,8 @@ use teleporter
 take business card
 look business card
 look strange book
+$ registers[7] = 0x6486
+$ rawMemory.writeUInt16LE(0x6, 0x2ada)
+$ rawMemory.writeUInt16LE(0x15, 0x2ae2)
+$ rawMemory.writeUInt16LE(0x15, 0x2ae4)
+use teleporter
