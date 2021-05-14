@@ -82,6 +82,8 @@ Synacor world to `visualizations/synacore-map.dot`:
 npm run analyze programs/challenge.synbin
 ```
 
+Locations annotated with '❗️' have special behaviour on entry.
+
 <img src="./visualizations/synacore-map.svg" />
 
 ## External Debugging

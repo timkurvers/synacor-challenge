@@ -45,8 +45,11 @@ class Analyzer {
       // Determine items available at this location
       const items = this.items.filter((item) => item.location === location.id);
 
+      // Annotate locations with special behaviour on entry
+      const suffix = location.fn ? '❗️' : '';
+
       const label = [
-        location.label,
+        `${location.label}${suffix}`,
         ...items.map((item) => `+ ${item.label}`),
       ].join('\\n');
 
