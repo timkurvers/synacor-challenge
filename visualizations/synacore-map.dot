@@ -165,7 +165,7 @@ digraph Synacor {
   5146 -> 5156 [label="east"]
   5146 -> 5186 [label="south"]
   5146 -> 5136 [label="west"]
-  5156 [fillcolor="2" label="Vault Door '30'❗️" shape="ellipse"]
+  5156 [fillcolor="2" label="Vault Door '1'\n(req. '30')❗️" shape="ellipse"]
   5156 -> 5196 [label="south"]
   5156 -> 5146 [label="west"]
   5156 -> 5286 [label="vault"]

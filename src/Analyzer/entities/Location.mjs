@@ -43,9 +43,11 @@ class Location {
 
   get label() {
     if (this.name.startsWith('Vault')) {
-      const match = this.description.match(/'[^']+'/);
-      if (match) {
-        return `${this.name} ${match[0]}`;
+      const parts = this.description.match(/'[^']+'/g);
+      if (parts) {
+        const symbol = parts.pop();
+        const suffix = parts.length ? `\\n(req. ${parts.pop()})` : '';
+        return `${this.name} ${symbol}${suffix}`;
       }
     }
     return this.name;
