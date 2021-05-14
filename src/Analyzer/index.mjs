@@ -26,8 +26,8 @@ class Analyzer {
       'analyzer must be provided with the official Synacor challenge binary',
     );
     assert.strictEqual(
-      this.data.readBigUInt64BE(0x121A),
-      0xFE17081814691769n,
+      this.data.readBigUInt64BE(0x2FFC),
+      0x090046006F006F00n,
       'analyzer must be provided with a binary that has the self-test complete',
     );
 
