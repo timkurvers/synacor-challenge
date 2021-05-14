@@ -73,6 +73,17 @@ $ dump()
 raw memory dumped to: programs/challenge-20200618T223617810Z.synbin
 ```
 
+## Analysis
+
+To analyze the official challenge binary and generate a visualization of the
+Synacor world to `visualizations/synacore-map.dot`:
+
+```bash
+npm run analyze programs/challenge.synbin
+```
+
+<img src="./visualizations/synacore-map.svg" />
+
 ## External Debugging
 
 Debuggers like `gdb` do not support arbitrary architectures like Synacor out of
