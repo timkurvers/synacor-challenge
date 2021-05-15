@@ -1,3 +1,5 @@
+take tablet
+use tablet
 doorway
 north
 north
@@ -58,3 +60,31 @@ $ rawMemory.writeUInt16LE(0x6, 0x2ada)
 $ rawMemory.writeUInt16LE(0x15, 0x2ae2)
 $ rawMemory.writeUInt16LE(0x15, 0x2ae4)
 use teleporter
+north
+north
+north
+north
+north
+north
+north
+east
+take journal
+west
+north
+north
+take orb
+north
+east
+east
+north
+west
+south
+east
+east
+west
+north
+north
+east
+vault
+take mirror
+use mirror
